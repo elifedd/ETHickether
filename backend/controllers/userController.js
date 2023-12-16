@@ -6,7 +6,7 @@ const deneme = async (req, res) => {
       console.log(req.body);
   
       // Process the data and send a response
-      const responseData = { message: `Here is the key, key1: ${key1}, key2: ${key2} trying something` };
+      const responseData = { message: `Here is the key, key1: ${key1}, key2: ${key2}` };
       res.json(responseData);
     } catch (error) {
       console.error(error);
