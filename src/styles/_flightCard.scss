@@ -1,0 +1,100 @@
+.flight {
+    &-card {
+        border: 1px solid $light-blue;
+        padding: 2rem 3rem;
+        margin: 2rem;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__logo {
+            flex: 1;
+            display: flex;
+            height:7rem;
+            object-fit: contain;
+        }
+    }
+
+    &-duration {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+
+        > svg {
+            fill: $blue;
+        }
+
+        &__shapes {
+            display: flex;
+            align-items: center;
+
+            .line {
+                height: 0.1rem;
+                width: 10rem;
+                background-color: $blue;
+            }
+
+            .circle {
+                width: 1.6rem;
+                height: 1.6rem;
+                border-radius: 50%;
+                border: 0.1rem solid $blue;
+
+                &-filled {
+                    background-color: $blue;
+                }
+            }
+        }
+
+        &__val {
+            font-size: 1.6rem;
+        }
+    }
+
+    &-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .4rem;
+
+        &__time {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 2.4rem;
+        }
+
+        &__loc {
+            font-size: 1.2rem;
+            line-height: 1.6rem;
+        }
+    }
+
+    &-action {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+
+        &__price {
+            color: $blue;
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 1.6rem; 
+        }
+
+        &__btn {
+            background-color: $blue;
+            padding: 0.8rem 2.2rem;
+            color: $white;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+    }
+}
