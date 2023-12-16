@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as DigitalWalletPayment } from '../assets/digital-wallet-payment.svg';
 import { ReactComponent as MetaMask } from '../assets/metamask.svg';
 import { ReactComponent as CloseIcon } from '../assets/close-icon.svg';
 import axios from 'axios';
 
 function ConnectWalletModal({ closeModal }) {
+  const [isWalletConnected, setWalletConnected] = useState(false);
+
   const handleButtonClick = async () => {
+    connect();
+
     try {
       const response = await axios.post('/api/deneme', {
         // your request payload/data
@@ -18,6 +22,30 @@ function ConnectWalletModal({ closeModal }) {
       console.error('Error sending request:', error);
     }
   };
+
+async function connect() {
+  if (window.ethereum) {
+    try {
+      // Request access to the user's accounts
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // Use the current MetaMask selected/active wallet address
+      const walletAddress = accounts.length > 0 ? accounts[0] : undefined;
+
+      if (walletAddress) {
+        setWalletConnected(true);
+        console.log(`Wallet: ${walletAddress}`);
+      } else {
+        console.error('No wallet address available.');
+      }
+    } catch (error) {
+      console.error('Error connecting wallet:', error);
+    }
+  } else {
+    console.log("No wallet");
+  }
+}
+
   return (
     <div className='modalBackground'>
       <div className='modalContainer'>
