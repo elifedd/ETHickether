@@ -88,6 +88,9 @@
         }
 
         &__btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             background-color: $blue;
             padding: 0.8rem 2.2rem;
             color: $white;
