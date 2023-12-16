@@ -7,7 +7,7 @@ import axios from 'axios';
 function ConnectWalletModal({ closeModal }) {
   const handleButtonClick = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/deneme', {
+      const response = await axios.post('/api/deneme', {
         // your request payload/data
         key1: 10,
         key2: 20,
