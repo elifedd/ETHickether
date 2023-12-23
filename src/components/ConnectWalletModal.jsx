@@ -3,13 +3,14 @@ import { ReactComponent as DigitalWalletPayment } from '../assets/digital-wallet
 import { ReactComponent as MetaMask } from '../assets/metamask.svg';
 import { ReactComponent as CloseIcon } from '../assets/close-icon.svg';
 import axios from 'axios';
+import Web3 from 'web3';
 
 function ConnectWalletModal({ closeModal }) {
   const [isWalletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState(null);
 
   const handleButtonClick = async () => {
-    connect();
+    connectMetamask();
 
     try {
       const response = await axios.post('/api/deneme', {
@@ -24,7 +25,7 @@ function ConnectWalletModal({ closeModal }) {
     }
   };
 
-  async function connect() {
+  async function connectMetamask() {
     if (window.ethereum) {
       try {
         // Request access to the user's accounts
@@ -48,7 +49,50 @@ function ConnectWalletModal({ closeModal }) {
     }
   }
 
-  async function disconnect() {
+  // connect contract
+  const connectContract = async () => {
+    const ABI = [
+      {
+        "inputs": [],
+        "name": "increment",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "count",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ]
+    const Address = "0xBa9Da481Ce20cD4c8E7391b28927E53CaF25C9Bc";
+    window.web3 = await new Web3(window.ethereum);
+    window.contract = await new window.web3.eth.Contract( ABI, Address);
+    console.log(window.contract);
+  }
+
+  // read contract
+  const readContract = async () => {
+    // call is used for read data
+    const data = await window.contract.methods.count().call();
+    console.log('count: ', data);
+  }
+
+  // TODO: write smart contract for the project :)
+
+  const interactWContract = async () => {
+    await window.contract.methods.increment().send({ from: walletAddress });
+  }
+
+  async function disconnectMetamask() {
     try {
       // Clear the wallet connection state
       setWalletConnected(false);
@@ -83,7 +127,12 @@ function ConnectWalletModal({ closeModal }) {
                     </div>
                   </div>
                 </div>
-                <button className='disconnect-btn' onClick={disconnect}>disconnect wallet</button>
+                <button className='disconnect-btn' onClick={disconnectMetamask}>disconnect wallet</button>
+                {/* TODO: these are not will be buttons will be called from the related functions */}
+                {/* this is for testing purposes only */}
+                <button onClick={connectContract}>CONNECT TO CONTRACT</button>
+                <button onClick={interactWContract}>INCREMENT</button>
+                <button onClick={readContract}>GET DATA FROM CONTRACT</button>
               </div>
               
             ) : (
