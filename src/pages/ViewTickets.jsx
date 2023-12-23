@@ -67,7 +67,6 @@ function ViewTickets() {
         {flights.map((flight, index) => (
           <Flight key={index} {...flight} />
         ))}
-
       </div>
     </div>
   );

@@ -14,7 +14,7 @@
             display: flex;
             align-items: center;
             flex-direction: column;
-            gap: 3.5rem;
+            gap: 2rem;
         }
     }
 
@@ -78,4 +78,14 @@
     &:hover {
         background-color: $gray-2;
     }
+}
+
+.continue-btn {
+    border-radius: 1rem;
+    width: max-content;
+    background-color: $blue;
+    border: none;
+    color: $white;
+    padding: 1rem 2.4rem;
+    cursor: pointer;
 }

@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { ReactComponent as DigitalWalletPayment } from '../assets/digital-wallet-payment.svg';
 import { ReactComponent as MetaMask } from '../assets/metamask.svg';
 import { ReactComponent as CloseIcon } from '../assets/close-icon.svg';
+import ReactLoading from 'react-loading';
+import { useHistory } from 'react-router-dom'; 
 import axios from 'axios';
 import Web3 from 'web3';
 
 function ConnectWalletModal({ closeModal }) {
+  const history = useHistory();
   const [isWalletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const handleButtonClick = async () => {
     connectMetamask();
@@ -73,23 +77,44 @@ function ConnectWalletModal({ closeModal }) {
         "type": "function"
       }
     ]
-    const Address = "0xBa9Da481Ce20cD4c8E7391b28927E53CaF25C9Bc";
+    const Address = "0x65ea55C63188041627024d306baB271cAf382086";
     window.web3 = await new Web3(window.ethereum);
     window.contract = await new window.web3.eth.Contract( ABI, Address);
-    console.log(window.contract);
+    // console.log(window.contract);
   }
 
+  // testing purposes only
   // read contract
-  const readContract = async () => {
-    // call is used for read data
-    const data = await window.contract.methods.count().call();
-    console.log('count: ', data);
-  }
+  // const readContract = async () => {
+  //   // call is used for read data
+  //   const data = await window.contract.methods.count().call();
+  //   console.log('count: ', data);
+  // }
 
   // TODO: write smart contract for the project :)
 
   const interactWContract = async () => {
-    await window.contract.methods.increment().send({ from: walletAddress });
+    await connectContract();
+    try {
+      setLoading(true);
+      const receipt = await window.contract.methods.increment().send({ from: walletAddress });
+  
+      console.log('Transaction hash:', receipt.transactionHash);
+  
+      if (receipt.status) {
+        console.log('Transaction successful!');
+        setLoading(false);
+        history.push('/paymentCompleted');
+        window.location.reload();
+      } else {
+        console.error('Transaction failed');
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error sending transaction:', error);
+    }
+    // await readContract();
   }
 
   async function disconnectMetamask() {
@@ -127,12 +152,14 @@ function ConnectWalletModal({ closeModal }) {
                     </div>
                   </div>
                 </div>
+                <button className='continue-btn' onClick={interactWContract} disabled={isLoading}>
+                  {isLoading ? (
+                    <ReactLoading type={'bubbles'} color={'#fff'} height={20} width={20} />
+                  ) : (
+                    'CONTINUE TO BUY'
+                  )}
+                </button>
                 <button className='disconnect-btn' onClick={disconnectMetamask}>disconnect wallet</button>
-                {/* TODO: these are not will be buttons will be called from the related functions */}
-                {/* this is for testing purposes only */}
-                <button onClick={connectContract}>CONNECT TO CONTRACT</button>
-                <button onClick={interactWContract}>INCREMENT</button>
-                <button onClick={readContract}>GET DATA FROM CONTRACT</button>
               </div>
               
             ) : (
