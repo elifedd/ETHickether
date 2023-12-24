@@ -3,53 +3,64 @@ const { PassThrough } = require('stream');
 const Web3 = require('web3');
 const fs = require('fs');
 const axios = require('axios');
+require('dotenv').config();
 
 let ipfsHash;
 const pinataSDK = require('@pinata/sdk');
 const pinataKey = ''
-const pinateSecretKey = ''
+const pinateSecretKey = process.env.PINATA_SECRET_API_KEY
 const pinata = new pinataSDK({pinataJWTKey: pinataKey});
-const imagePath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\FlightsInformation.txt';
-const testIPFSHash = 'QmRY9G3npHaYb3WPuXBxHh3jtXprmCrP9Ff4sexg4JdrCS';
+const filePath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\FlightsInformation.txt';
+//const testIPFSHash = 'QmRY9G3npHaYb3WPuXBxHh3jtXprmCrP9Ff4sexg4JdrCS';
+const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt';
 
+  const IsPayed = async(req, res) => {
+    try{
+      if(req)
+      {
+        const flightInformations = req.body;
+        if(flightInformations != null && CreateAndSendFile(flightInformations))
+          await downloadFromPinata(ipfsHash, downloadPath);
+        else
+          console.log('File cant downloaded from ipfs');
+      }
+      else
+        console.log('Payment cant taken from user');
+    }catch (error){
+      console.log('Error detected when creaating, sending or downloaded file. Error = ' + error);
+    }
+  }
 
-
-const deneme = async (req, res) => {
-    try {
-      //interactWithContract();
-
-      // Handle the POST request
-      //const { key1, key2 } = req.body;
-      //console.log(req.body);
+  const CreateAndSendFile = async (flightInformations) =>{
+    try{
       // Create file for sending flight information txt via ipfs
-
-      fs.appendFile('FlightsInformation.txt', 'Will come to flights informations in here',(err) =>
+      //appendFile
+      fs.writeFile('FlightsInformation.txt', 'Thank you for chosing us. Here is your flight informations:\n' + flightInformations,(err) =>
       {
         if(err) throw err;
         console.log('File Created');
       });
+    }catch (error){
+      console.log('Error detected when creating flight information file. Error = ' + error);
+    }
 
-      //const responseData = { message: `File creaation is succesfull. Here is the keys: ${key1}, key2: ${key2}` };
-      //res.json(responseData);
-
-      const fileStream = fs.createReadStream(imagePath);
+    try{
+      // Read file for sending in ipfs
+      const fileStream = fs.createReadStream(filePath);
       const options = {
         pinataMetadata: {
           name: 'TicketImage',
         },
       };
 
-      //const result = await pinata.pinFileToIPFS(fileStream, options);
-      //ipfsHash = result.IpfsHash;
-      console.log('Uploaded to Pinata. IPFS Hash:', ipfsHash);
-      await downloadFromPinata(testIPFSHash, 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt');
-      //await downloadFromPinata2(testIPFSHash, 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt');
-      console.log('Downloadad file from to IPFS');
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      const result = await pinata.pinFileToIPFS(fileStream, options);
+      ipfsHash = result.IpfsHash;
+      console.log('File uploaded to Pinata with IPFS Hash:', ipfsHash);
+      return true;
+    }catch (error){
+      console.log('Error detected when trying to upload flight infotmarion file to ipfs. Erro = ' + error);
     }
-  };
+  }
 
   async function downloadFromPinata(ipfsHash, destinationPath) {
     try {
@@ -61,7 +72,6 @@ const deneme = async (req, res) => {
           'pinata_secret_api_key': pinateSecretKey
         }
       });
-
       // Check if the response contains the file content
       if (response.status === 200 && response.data) {
         // Write the file content to the destination path
@@ -81,59 +91,6 @@ const deneme = async (req, res) => {
     }
   }
 
-
-
-
-  const interactWithContract = async () => {
-    const infuraUrl = 'https://sepolia.infura.io/v3/222d3e706f52465eac2ae9e367260335';
-    const web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
-
-    web3.eth.getBlockNumber().then((result) => {
-      console.log("Latest Ethereum Block is ", result);
-    });
-
-    try {
-      const accounts = await web3.eth.getAccounts();
-      console.log('Account: ', accounts);
-    } catch (error) {
-      console.error('Error fetching accounts:', error);
-    }
-
-    const abi = [
-      {
-        "inputs": [],
-        "name": "count",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "increment",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
-    ];
-    const address = "0xf8e81D47203A594245E36C48e151709F0C19fBe8";
-
-    const contract = new web3.eth.Contract(abi, address);
-
-    try {
-      const result = await contract.methods.increment().call({ from: '0xfd8906788832bb74d686241aaFA8d94f428C7A11', gas: 2000000 });
-      console.log('Result of calling increment function:', result);
-    } catch (error) {
-      console.error('Error calling increment function:', error);
-    }
-
-  };
-
   module.exports = {
-    deneme,
+    IsPayed,
   };

@@ -17,7 +17,7 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
     connectMetamask();
 
     try {
-      const response = await axios.post('/api/deneme', {
+      const response = await axios.post('/payment', {
         // your request payload/data
         key1: 10,
         key2: 20,
@@ -194,9 +194,9 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
       try {
         // Replace 'setTicketPrices' with the actual function in your smart contract to set ticket prices
         const receipt = await window.contract.methods.ticketPrice(flightTicketPrice).send({ from: walletAddress });
-  
+
         console.log('Transaction hash:', receipt.transactionHash);
-  
+
         if (receipt.status) {
           console.log('Ticket prices set successfully!');
         } else {
@@ -212,9 +212,9 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
     try {
       setLoading(true);
       const receipt = await window.contract.methods.purchaseTicket().send({ from: walletAddress });
-  
+
       console.log('Transaction hash:', receipt.transactionHash);
-  
+
       if (receipt.status) {
         console.log('Transaction successful!');
         setLoading(false);
@@ -236,7 +236,7 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
       // Clear the wallet connection state
       setWalletConnected(false);
       setWalletAddress(null);
-  
+
       console.log('Wallet disconnected');
     } catch (error) {
       console.error('Error disconnecting wallet:', error);
@@ -252,7 +252,7 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
           <CloseIcon />
         </button >
         <div className='modalContainer-left'>
-          {isWalletConnected ? ( 
+          {isWalletConnected ? (
             <div className='wallet-card-container'>
                 <div className='wallet-card'>
                   <div className="wallet">
@@ -275,7 +275,7 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
                 </button>
                 <button className='disconnect-btn' onClick={disconnectMetamask}>disconnect wallet</button>
               </div>
-              
+
             ) : (
               <>
                 <h2 className='modalContainer-left__title'>Connect your wallet</h2><p className='modalContainer-left__subtitle'>Select the network that you want to connect below</p><div className='modalContainer-left__container'>
