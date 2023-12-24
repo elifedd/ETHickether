@@ -6,9 +6,8 @@ import ReactLoading from 'react-loading';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Web3 from 'web3';
-import ViewTickets from '../pages/ViewTickets';
 
-function ConnectWalletModal({ closeModal, flightTicketPrice }) {
+function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination, departureTime, arrivalTime, airline}) {
   const history = useHistory();
   const [isWalletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState(null);
@@ -217,22 +216,21 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
       if (receipt.status) {
         console.log('Transaction successful!');
         setLoading(false);
-        /* TODO elif will handle in here
         try {
           const response = await axios.post('/payment', {
             // your request payload/data
-            flightInformations: `FlightCompany: ${viewTickets.flight{}}\n,
-                                 From: ${}\n
-                                 To: ${}\n
-                                 Arrivial Time: ${}\n
-                                 Destination Time: ${}`
+            flightInformations: `FlightCompany: ${airline}\n
+                    From: ${origin}\n
+                    To: ${destination}\n
+                    Arrival Time: ${departureTime}\n
+                    Destination Time: ${arrivalTime}`
+
           });
 
           console.log('Response from server:', response.data);
         } catch (error) {
           console.error('Error sending request:', error);
         }
-        */
         history.push('/paymentCompleted');
         window.location.reload();
       } else {
