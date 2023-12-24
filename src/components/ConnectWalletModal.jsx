@@ -56,108 +56,14 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
     const ABI = [
       {
         "inputs": [],
-        "name": "purchaseTicket",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_ticketPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "_flightDetails",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "buyer",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "TicketPurchased",
-        "type": "event"
-      },
-      {
-        "inputs": [],
-        "name": "withdrawFunds",
+        "name": "increment",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
         "inputs": [],
-        "name": "flightDetails",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "isTicketPurchased",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "passenger",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "ticketPrice",
+        "name": "count",
         "outputs": [
           {
             "internalType": "uint256",
@@ -169,10 +75,10 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
         "type": "function"
       }
     ]
-    const Address = "0xF38770ACf0434b2123053aD3Baa29f6e854D68d5";
+    const Address = "0xCB558F4Da13bBa82F4675B00e0613D368b82C4B7";
     window.web3 = await new Web3(window.ethereum);
     window.contract = await new window.web3.eth.Contract( ABI, Address);
-    setTicketPrices();
+    // setTicketPrices();
     // console.log(window.contract);
   }
 
@@ -209,7 +115,7 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
     await connectContract();
     try {
       setLoading(true);
-      const receipt = await window.contract.methods.purchaseTicket().send({ from: walletAddress });
+      const receipt = await window.contract.methods.increment().send({ from: walletAddress });
 
       console.log('Transaction hash:', receipt.transactionHash);
 

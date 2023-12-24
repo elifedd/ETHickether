@@ -1,6 +1,4 @@
 // userController.js
-const { PassThrough } = require('stream');
-const Web3 = require('web3');
 const fs = require('fs');
 const axios = require('axios');
 require('dotenv').config();
@@ -10,8 +8,8 @@ const pinataSDK = require('@pinata/sdk');
 const pinataKey = process.env.PINATA_API_KEY;
 const pinateSecretKey = process.env.PINATA_SECRET_API_KEY;
 const pinata = new pinataSDK({pinataJWTKey: pinataKey});
-const filePath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\FlightsInformation.txt';
-const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt';
+const filePath = '.\\FlightsInformation.txt';
+const downloadPath = '.\\ipfsFile\\downloadedFile.txt';
 
   const IsPayed = async(req, res) => {
     try{
@@ -43,11 +41,15 @@ const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downlo
     try{
       // Create file for sending flight information txt via ipfs
       //appendFile
-      fs.writeFile('FlightsInformation.txt', 'Thank you for chosing us. Here is your flight informations:\n' + flightInformations,(err) =>
-      {
-        if(err) throw err;
+      let formattedFlightInfo = 'Thank you for choosing us. Here is your flight information:\n';
+      for (const key in flightInformations) {
+        formattedFlightInfo += `${key}: ${flightInformations[key]}\n`;
+      }
+      fs.writeFile('FlightsInformation.txt', formattedFlightInfo, (err) => {
+        if (err) throw err;
         console.log('File Created');
-      });
+    });
+
     }catch (error){
       console.log('Error detected when creating flight information file. Error = ' + error);
     }
