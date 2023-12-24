@@ -7,8 +7,9 @@ require('dotenv').config();
 
 let ipfsHash;
 const pinataSDK = require('@pinata/sdk');
-const pinataKey = ''
-const pinateSecretKey = process.env.PINATA_SECRET_API_KEY
+const { SlowBuffer } = require('buffer');
+const pinataKey = process.env.PINATA_API_KEY;
+const pinateSecretKey = process.env.PINATA_SECRET_API_KEY;
 const pinata = new pinataSDK({pinataJWTKey: pinataKey});
 const filePath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\FlightsInformation.txt';
 //const testIPFSHash = 'QmRY9G3npHaYb3WPuXBxHh3jtXprmCrP9Ff4sexg4JdrCS';
@@ -19,7 +20,7 @@ const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downlo
       if(req)
       {
         const flightInformations = req.body;
-        if(flightInformations != null && CreateAndSendFile(flightInformations))
+        if(flightInformations != null && await CreateAndSendFile(flightInformations))
           await downloadFromPinata(ipfsHash, downloadPath);
         else
           console.log('File cant downloaded from ipfs');
@@ -49,7 +50,7 @@ const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downlo
       const fileStream = fs.createReadStream(filePath);
       const options = {
         pinataMetadata: {
-          name: 'TicketImage',
+          name: 'FlightInformation',
         },
       };
 
@@ -65,7 +66,7 @@ const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downlo
   async function downloadFromPinata(ipfsHash, destinationPath) {
     try {
       // Make a GET request to Pinata API's getDataByHash endpoint
-      console.log(ipfsHash)
+      console.log('Downloaded this ipfs hash: ' + ipfsHash);
       const response = await axios.get(`https://blue-passive-asp-55.mypinata.cloud/ipfs/${ipfsHash}`, {
         headers: {
           'pinata_api_key': pinataKey,
@@ -90,7 +91,6 @@ const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downlo
       throw error;
     }
   }
-
   module.exports = {
     IsPayed,
   };
