@@ -6,6 +6,7 @@ import ReactLoading from 'react-loading';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Web3 from 'web3';
+import ViewTickets from '../pages/ViewTickets';
 
 function ConnectWalletModal({ closeModal, flightTicketPrice }) {
   const history = useHistory();
@@ -14,19 +15,17 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
   const [isLoading, setLoading] = useState(false);
 
   const handleButtonClick = async () => {
-    connectMetamask();
-
+    /* TODO will be clear
     try {
       const response = await axios.post('/payment', {
-        // your request payload/data
-        key1: 10,
-        key2: 20,
       });
 
       console.log('Response from server:', response.data);
     } catch (error) {
       console.error('Error sending request:', error);
     }
+    */
+    connectMetamask();
   };
 
   async function connectMetamask() {
@@ -218,6 +217,22 @@ function ConnectWalletModal({ closeModal, flightTicketPrice }) {
       if (receipt.status) {
         console.log('Transaction successful!');
         setLoading(false);
+        /* TODO elif will handle in here
+        try {
+          const response = await axios.post('/payment', {
+            // your request payload/data
+            flightInformations: `FlightCompany: ${viewTickets.flight{}}\n,
+                                 From: ${}\n
+                                 To: ${}\n
+                                 Arrivial Time: ${}\n
+                                 Destination Time: ${}`
+          });
+
+          console.log('Response from server:', response.data);
+        } catch (error) {
+          console.error('Error sending request:', error);
+        }
+        */
         history.push('/paymentCompleted');
         window.location.reload();
       } else {

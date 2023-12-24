@@ -7,12 +7,10 @@ require('dotenv').config();
 
 let ipfsHash;
 const pinataSDK = require('@pinata/sdk');
-const { SlowBuffer } = require('buffer');
 const pinataKey = process.env.PINATA_API_KEY;
 const pinateSecretKey = process.env.PINATA_SECRET_API_KEY;
 const pinata = new pinataSDK({pinataJWTKey: pinataKey});
 const filePath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\FlightsInformation.txt';
-//const testIPFSHash = 'QmRY9G3npHaYb3WPuXBxHh3jtXprmCrP9Ff4sexg4JdrCS';
 const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt';
 
   const IsPayed = async(req, res) => {
@@ -23,12 +21,21 @@ const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downlo
         if(flightInformations != null && await CreateAndSendFile(flightInformations))
           await downloadFromPinata(ipfsHash, downloadPath);
         else
+        {
           console.log('File cant downloaded from ipfs');
+          res.json({message: 'File cant downloaded from ipfs'});
+        }
+        res.json({message: 'Payment and FlightInformation file sending from IPFS is succesfull.'});
       }
       else
+      {
         console.log('Payment cant taken from user');
+        res.json({message: 'Payment cant taken from user'});
+      }
+
     }catch (error){
       console.log('Error detected when creaating, sending or downloaded file. Error = ' + error);
+      res.json({message: 'Error detected when creaating, sending or downloaded file. Error = '  + error});
     }
   }
 
