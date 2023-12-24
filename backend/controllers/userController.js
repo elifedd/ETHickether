@@ -10,14 +10,15 @@ const pinataSDK = require('@pinata/sdk');
 const pinataKey = process.env.PINATA_API_KEY;
 const pinateSecretKey = process.env.PINATA_SECRET_API_KEY;
 const pinata = new pinataSDK({pinataJWTKey: pinataKey});
-const filePath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\FlightsInformation.txt';
-const downloadPath = 'E:\\GitHub\\ETHickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt';
+const filePath = '\\Users\\elif\\Desktop\\ethickether_ceng485\\backend\\FlightsInformation.txt';
+const downloadPath = '\\Users\\elif\\Desktop\\ethickether_ceng485\\backend\\ipfsFile\\downloadedFile.txt';
 
   const IsPayed = async(req, res) => {
     try{
       if(req)
       {
         const flightInformations = req.body;
+        console.log(flightInformations);
         if(flightInformations != null && await CreateAndSendFile(flightInformations))
           await downloadFromPinata(ipfsHash, downloadPath);
         else
