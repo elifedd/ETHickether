@@ -1,6 +1,7 @@
 // userController.js
 const fs = require('fs');
 const axios = require('axios');
+const path = require('path');
 require('dotenv').config();
 
 let ipfsHash;
@@ -8,8 +9,8 @@ const pinataSDK = require('@pinata/sdk');
 const pinataKey = process.env.PINATA_API_KEY;
 const pinateSecretKey = process.env.PINATA_SECRET_API_KEY;
 const pinata = new pinataSDK({pinataJWTKey: pinataKey});
-const filePath = '.\\FlightsInformation.txt';
-const downloadPath = '.\\ipfsFile\\downloadedFile.txt';
+const filePath = path.join(__dirname, '..', 'FlightsInformation.txt');
+const downloadPath = path.join(__dirname, '..', 'ipfsFile', 'downloadedFile.txt');
 
   const IsPayed = async(req, res) => {
     try{
