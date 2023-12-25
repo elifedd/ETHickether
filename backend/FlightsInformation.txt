@@ -1,2 +1,10 @@
-Thank you for chosing us. Here is your flight informations:
-[object Object]
+Thank you for choosing us. Here is your flight information:
+flightInformations: FlightCompany: American Airlines
+
+                    From: San Francisco
+
+                    To: Seattle
+
+                    Arrival Time: 01:15 PM
+
+                    Destination Time: 01:15 PM
