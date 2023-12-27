@@ -64,9 +64,9 @@ function Flight({ airline, logo, origin, destination, departureTime, arrivalTime
 
 function ViewTickets() {
   const flights = [
-    { number: "FL001", airline: "Delta Airlines", logo: "https://s3.amazonaws.com/static.beavercountyradio.com/wp-content/uploads/2020/01/30135727/Delta-Airlines-Logo.jpg", origin: "New York", destination: "Los Angeles", departureTime: "08:00 AM", arrivalTime: "12:00 PM", priceInEth: 0.00000054 },
-    { number: "FL002", airline: "United Airlines", logo: "https://logowik.com/content/uploads/images/united-airlines-old8802.logowik.com.webp", origin: "Chicago", destination: "Miami", departureTime: "10:30 AM", arrivalTime: "02:45 PM", priceInEth: 0.00000012 },
-    { number: "FL003", airline: "American Airlines", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtHGeBSudT56w7LzvO74me7EKobaUwQUrS9aokj6Stg&s", origin: "San Francisco", destination: "Seattle", departureTime: "01:15 PM", arrivalTime: "03:30 PM", priceInEth: 0.00000021 }
+    { number: "FL001", airline: "Delta Airlines", logo: "https://s3.amazonaws.com/static.beavercountyradio.com/wp-content/uploads/2020/01/30135727/Delta-Airlines-Logo.jpg", origin: "New York", destination: "Los Angeles", departureTime: "08:00 AM", arrivalTime: "12:00 PM", priceInEth: 68 },
+    { number: "FL002", airline: "United Airlines", logo: "https://logowik.com/content/uploads/images/united-airlines-old8802.logowik.com.webp", origin: "Chicago", destination: "Miami", departureTime: "10:30 AM", arrivalTime: "02:45 PM", priceInEth: 82 },
+    { number: "FL003", airline: "American Airlines", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtHGeBSudT56w7LzvO74me7EKobaUwQUrS9aokj6Stg&s", origin: "San Francisco", destination: "Seattle", departureTime: "01:15 PM", arrivalTime: "03:30 PM", priceInEth: 70 }
   ];  
 
   return (

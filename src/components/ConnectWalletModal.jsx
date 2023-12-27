@@ -14,16 +14,6 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
   const [isLoading, setLoading] = useState(false);
 
   const handleButtonClick = async () => {
-    /* TODO will be clear
-    try {
-      const response = await axios.post('/payment', {
-      });
-
-      console.log('Response from server:', response.data);
-    } catch (error) {
-      console.error('Error sending request:', error);
-    }
-    */
     connectMetamask();
   };
 
@@ -55,15 +45,38 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
   const connectContract = async () => {
     const ABI = [
       {
-        "inputs": [],
-        "name": "increment",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_ticketPrice",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "buyer",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "TicketPurchased",
+        "type": "event"
       },
       {
         "inputs": [],
-        "name": "count",
+        "name": "getContractBalance",
         "outputs": [
           {
             "internalType": "uint256",
@@ -73,49 +86,103 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
         ],
         "stateMutability": "view",
         "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isTicketPurchased",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "passenger",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_paymentAmount",
+            "type": "uint256"
+          }
+        ],
+        "name": "purchaseTicket",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_newTicketPrice",
+            "type": "uint256"
+          }
+        ],
+        "name": "setTicketPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "ticketPrice",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
       }
-    ]
-    const Address = "0xCB558F4Da13bBa82F4675B00e0613D368b82C4B7";
+    ];
+    const Address = "0x9F0B245588aC39ebB39190c5De8E32c995CE122E";
     window.web3 = await new Web3(window.ethereum);
     window.contract = await new window.web3.eth.Contract( ABI, Address);
-    // setTicketPrices();
-    // console.log(window.contract);
   }
-
-  // testing purposes only
-  // read contract
-  // const readContract = async () => {
-  //   // call is used for read data
-  //   const data = await window.contract.methods.count().call();
-  //   console.log('count: ', data);
-  // }
-
-  // TODO: write smart contract for the project :)
-
-    // Set ticket prices in your flight ticket contract
-    const setTicketPrices = async () => {
-      console.log(flightTicketPrice);
-      try {
-        // Replace 'setTicketPrices' with the actual function in your smart contract to set ticket prices
-        const receipt = await window.contract.methods.ticketPrice(flightTicketPrice).send({ from: walletAddress });
-
-        console.log('Transaction hash:', receipt.transactionHash);
-
-        if (receipt.status) {
-          console.log('Ticket prices set successfully!');
-        } else {
-          console.error('Setting ticket prices failed');
-        }
-      } catch (error) {
-        console.error('Error setting ticket prices:', error);
-      }
-    };
 
   const interactWContract = async () => {
     await connectContract();
     try {
       setLoading(true);
-      const receipt = await window.contract.methods.increment().send({ from: walletAddress });
+      const receipt = await window.contract.methods.purchaseTicket(300).send({ from: walletAddress, value: flightTicketPrice });
 
       console.log('Transaction hash:', receipt.transactionHash);
 
@@ -147,7 +214,6 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
       setLoading(false);
       console.error('Error sending transaction:', error);
     }
-    // await readContract();
   }
 
   async function disconnectMetamask() {

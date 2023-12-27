@@ -75,6 +75,11 @@ const downloadPath = path.join(__dirname, '..', 'ipfsFile', 'downloadedFile.txt'
 
   async function downloadFromPinata(ipfsHash, destinationPath) {
     try {
+      const absolutePath = path.resolve(destinationPath);
+  
+      // Ensure that the directory structure exists
+      await fs.promises.mkdir(path.dirname(absolutePath), { recursive: true });
+  
       // Make a GET request to Pinata API's getDataByHash endpoint
       console.log('Downloaded this ipfs hash: ' + ipfsHash);
       const response = await axios.get(`https://blue-passive-asp-55.mypinata.cloud/ipfs/${ipfsHash}`, {
@@ -83,11 +88,12 @@ const downloadPath = path.join(__dirname, '..', 'ipfsFile', 'downloadedFile.txt'
           'pinata_secret_api_key': pinateSecretKey
         }
       });
+  
       // Check if the response contains the file content
       if (response.status === 200 && response.data) {
         // Write the file content to the destination path
-        fs.writeFileSync(destinationPath, response.data);
-        console.log('File downloaded from Pinata:', destinationPath);
+        await fs.promises.writeFile(absolutePath, response.data);
+        console.log('File downloaded from Pinata:', absolutePath);
       } else {
         console.error('Error: Invalid response from Pinata API');
         console.error('Response:', response.data);
@@ -101,6 +107,7 @@ const downloadPath = path.join(__dirname, '..', 'ipfsFile', 'downloadedFile.txt'
       throw error;
     }
   }
+  
   module.exports = {
     IsPayed,
   };
