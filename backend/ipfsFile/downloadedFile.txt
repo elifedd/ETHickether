@@ -1,0 +1,10 @@
+Thank you for choosing us. Here is your flight information:
+flightInformations: FlightCompany: Delta Airlines
+
+                    From: New York
+
+                    To: Los Angeles
+
+                    Arrival Time: 08:00 AM
+
+                    Destination Time: 08:00 AM

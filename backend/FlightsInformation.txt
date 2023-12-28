@@ -1,10 +1,10 @@
 Thank you for choosing us. Here is your flight information:
-flightInformations: FlightCompany: American Airlines
+flightInformations: FlightCompany: United Airlines
 
-                    From: San Francisco
+                    From: Chicago
 
-                    To: Seattle
+                    To: Miami
 
-                    Arrival Time: 01:15 PM
+                    Arrival Time: 10:30 AM
 
-                    Destination Time: 01:15 PM
+                    Destination Time: 10:30 AM
