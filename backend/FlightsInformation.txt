@@ -7,4 +7,4 @@ flightInformations: FlightCompany: United Airlines
 
                     Arrival Time: 10:30 AM
 
-                    Destination Time: 10:30 AM
+                    Destination Time: 02:45 PM

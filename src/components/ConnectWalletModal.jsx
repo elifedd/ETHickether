@@ -186,38 +186,7 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
     const Address = "0x3F00ff4372B9f5258Ae6f12b988e1b74180588f4";
     window.web3 = await new Web3(window.ethereum);
     window.contract = await new window.web3.eth.Contract( ABI, Address);
-    // setTicketPrices();
-    // console.log(window.contract);
   }
-
-  // testing purposes only
-  // read contract
-  // const readContract = async () => {
-  //   // call is used for read data
-  //   const data = await window.contract.methods.count().call();
-  //   console.log('count: ', data);
-  // }
-
-  // TODO: write smart contract for the project :)
-
-    // Set ticket prices in your flight ticket contract
-    const setTicketPrices = async () => {
-      console.log(flightTicketPrice);
-      try {
-        // Replace 'setTicketPrices' with the actual function in your smart contract to set ticket prices
-        const receipt = await window.contract.methods.ticketPrice(flightTicketPrice).send({ from: walletAddress });
-
-        console.log('Transaction hash:', receipt.transactionHash);
-
-        if (receipt.status) {
-          console.log('Ticket prices set successfully!');
-        } else {
-          console.error('Setting ticket prices failed');
-        }
-      } catch (error) {
-        console.error('Error setting ticket prices:', error);
-      }
-    };
 
   const interactWContract = async () => {
     await connectContract();
@@ -307,12 +276,13 @@ function ConnectWalletModal({ closeModal, flightTicketPrice, origin, destination
 
             ) : (
               <>
-                <h2 className='modalContainer-left_title'>Connect your wallet</h2><p className='modalContainer-leftsubtitle'>Select the network that you want to connect below</p><div className='modalContainer-left_container'>
-                <h3 className='modalContainer-left__container--title'>Choose Wallet</h3>
-                <button className='modalContainer-left__container--btn' onClick={handleButtonClick}>
-                  <MetaMask />
-                  <span>MetaMask</span>
-                </button>
+                <h2 className='modalContainer-left__title'>Connect your wallet</h2><p className='modalContainer-left__subtitle'>Select the network that you want to connect below</p>
+                <div className='modalContainer-left__container'>
+                  <h3 className='modalContainer-left__container--title'>Choose Wallet</h3>
+                  <button className='modalContainer-left__container--btn' onClick={handleButtonClick}>
+                    <MetaMask />
+                    <span>MetaMask</span>
+                  </button>
                 </div>
               </>
           )}

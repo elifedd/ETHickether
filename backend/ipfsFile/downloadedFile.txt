@@ -1,10 +1,10 @@
 Thank you for choosing us. Here is your flight information:
-flightInformations: FlightCompany: Delta Airlines
+flightInformations: FlightCompany: United Airlines
 
-                    From: New York
+                    From: Chicago
 
-                    To: Los Angeles
+                    To: Miami
 
-                    Arrival Time: 08:00 AM
+                    Arrival Time: 10:30 AM
 
-                    Destination Time: 08:00 AM
+                    Destination Time: 02:45 PM
